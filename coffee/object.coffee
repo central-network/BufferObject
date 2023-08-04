@@ -29,6 +29,9 @@ export class BufferObject extends DataView
 
 		unless match?
 			keyBuffer = @encoder.encode key
+
+			console.warn { key, val }
+			console.warn { keyBuffer, valBuffer }
 			
 			byteLength = (
 				(offset = @byteLength) + 
@@ -84,15 +87,17 @@ export class BufferObject extends DataView
 
 	find		: ( key, offset = 0, byteLength = @byteLength ) =>
 		return unless offset < byteLength
-		return unless @getUint8 offset
-
+		return unless type = @getUint16 offset
+		
+		console.log {type, offset}, @buffer
+        
 		keyOffset = offset
-		keyLength = @getUint16 offset + 1
+		keyLength = @getUint16 offset + 2
 
-		valOffset = keyOffset + 3 + keyLength
-		valLength = @getUint16  1 + valOffset 
+		valOffset = keyOffset + 4 + keyLength
+		valLength = @getUint16  2 + valOffset 
 
-		endOffset = valOffset + 3 + valLength
+		endOffset = valOffset + 4 + valLength
 
 		if  key is @decode keyOffset, valOffset 
 			return [ offset, valOffset, endOffset ]
@@ -107,4 +112,4 @@ export class BufferObject extends DataView
 		return unless result = view.find key
 		return view.decode result[1], result[2]
 
-    
+	

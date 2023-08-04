@@ -37,6 +37,8 @@ export var BufferObject = (function() {
       valLength = valBuffer.byteLength;
       if (match == null) {
         keyBuffer = this.encoder.encode(key);
+        console.warn({key, val});
+        console.warn({keyBuffer, valBuffer});
         byteLength = (offset = this.byteLength) + keyBuffer.byteLength + valBuffer.byteLength;
         this.resize(byteLength);
         ref = new Uint8Array(keyBuffer);
@@ -88,19 +90,20 @@ export var BufferObject = (function() {
     }
 
     find(key, offset = 0, byteLength = this.byteLength) {
-      var endOffset, keyLength, keyOffset, valLength, valOffset;
+      var endOffset, keyLength, keyOffset, type, valLength, valOffset;
       boundMethodCheck(this, BufferObject);
       if (!(offset < byteLength)) {
         return;
       }
-      if (!this.getUint8(offset)) {
+      if (!(type = this.getUint16(offset))) {
         return;
       }
+      console.log({type, offset}, this.buffer);
       keyOffset = offset;
-      keyLength = this.getUint16(offset + 1);
-      valOffset = keyOffset + 3 + keyLength;
-      valLength = this.getUint16(1 + valOffset);
-      endOffset = valOffset + 3 + valLength;
+      keyLength = this.getUint16(offset + 2);
+      valOffset = keyOffset + 4 + keyLength;
+      valLength = this.getUint16(2 + valOffset);
+      endOffset = valOffset + 4 + valLength;
       if (key === this.decode(keyOffset, valOffset)) {
         return [offset, valOffset, endOffset];
       }
