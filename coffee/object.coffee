@@ -1,4 +1,4 @@
-import { BufferEncoder, BufferDecoder } from "./buffer.js"
+import { BufferEncoder, BufferDecoder } from "../BufferControl/buffer.js"
 
 export class BufferObject extends DataView
 
@@ -29,9 +29,6 @@ export class BufferObject extends DataView
 
 		unless match?
 			keyBuffer = @encoder.encode key
-
-			console.warn { key, val }
-			console.warn { keyBuffer, valBuffer }
 			
 			byteLength = (
 				(offset = @byteLength) + 

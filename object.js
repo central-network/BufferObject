@@ -3,7 +3,7 @@ var boundMethodCheck = function(instance, Constructor) { if (!(instance instance
 import {
   BufferEncoder,
   BufferDecoder
-} from "./buffer.js";
+} from "../BufferControl/buffer.js";
 
 export var BufferObject = (function() {
   class BufferObject extends DataView {
@@ -37,8 +37,6 @@ export var BufferObject = (function() {
       valLength = valBuffer.byteLength;
       if (match == null) {
         keyBuffer = this.encoder.encode(key);
-        console.warn({key, val});
-        console.warn({keyBuffer, valBuffer});
         byteLength = (offset = this.byteLength) + keyBuffer.byteLength + valBuffer.byteLength;
         this.resize(byteLength);
         ref = new Uint8Array(keyBuffer);
