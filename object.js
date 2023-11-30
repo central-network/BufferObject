@@ -96,7 +96,6 @@ export var BufferObject = (function() {
       if (!(type = this.getUint16(offset))) {
         return;
       }
-      console.log({type, offset}, this.buffer);
       keyOffset = offset;
       keyLength = this.getUint16(offset + 2);
       valOffset = keyOffset + 4 + keyLength;

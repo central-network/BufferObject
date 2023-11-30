@@ -85,8 +85,6 @@ export class BufferObject extends DataView
 	find		: ( key, offset = 0, byteLength = @byteLength ) =>
 		return unless offset < byteLength
 		return unless type = @getUint16 offset
-		
-		console.log {type, offset}, @buffer
         
 		keyOffset = offset
 		keyLength = @getUint16 offset + 2
